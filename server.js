@@ -1,19 +1,19 @@
-const express = require("express");
-const path = require("path");
-const session = require("express-session");
-const SequelizeStore = require("connect-session-sequelize")(session.Store);
-const exphbs = require("express-handlebars");
+//dependendencies
+const express= require('express');
+const exphbs= require('express-handlebars');
+const path= require('path');
+const hbs =exphbs.create({});
 
+//Sets up express app
+const app=express();
+const PORT= process.env.PORT || 3001;
 
-const app = express();
-const PORT = process.env.PORT || 3001;
+app.engine('handlebars', hbs.engine); // telling express to use a templating engine and the engine we are telling it to use is handlebars
+app.set('view engine','handlebars'); // setting our view engine to be handlebars
 
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(require('./controllers/'))
 
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-sequelize.sync({ force: false }).then(() => {
-    app.listen(PORT, () => console.log(`ServerRun - http://localhost:${PORT}`));
-  });
-
+app.listen(PORT, ()=>{
+   console.log('server listening on: http://localhost:' +PORT);
+})
